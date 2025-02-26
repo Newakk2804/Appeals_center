@@ -1,0 +1,58 @@
+<div class="box-main">
+    <div class="box-main__appeals">
+        <div class="appeal-search">
+            <form action="search" method="POST" class="search-form" role="search">
+                <div class="search-specific-date">
+                    <label for="specific_date">Конкретная дата:</label>
+                    <input type="date" name="specific_date">
+                </div>
+                <div class="search-date-range">
+                    <label for="date_range">Диапазон дат:</label>
+                    <input type="date" name="from_date">
+                    <p>-</p>
+                    <input type="date" name="to_date">
+                </div>
+                <input type="submit" class="btn btn-search" value="Поиск">
+            </form>
+            <p>В случае заполнения всех полей фильтраций, приоретет отдается фильтрации по диапазону дат.</p>
+        </div>
+        <ul class="appeals-list">
+            <li class="appeals-actions">
+                <a href="/appeal/create" class="appeals-create btn">создать обращение</a>
+                <a href="/appeal/canceled-all-appeals" class="appeals-close-all btn btn-red">отменить все обращения</a>
+            </li>
+            <% data.forEach(appeal=> { %>
+                <li class="appeals-item">
+                    <p class="appeals-title">
+                        <%= appeal.title %>
+                    </p>
+                    <p class="appeals-date">
+                        <%= appeal.createdAt.toLocaleDateString('ru-RU') %>
+                    </p>
+                    <p class="appeals-status" id="status">
+                        <%= appeal.status %>
+                    </p>
+                    <div class="hr"></div>
+                    <div class="appeals-actions-form">
+                        <% if (appeal.status==="новое" ) { %>
+                            <form action="/appeal/patch/<%= appeal._id %>?_method=PATCH" method="POST">
+                                <input type="submit" value="взять в работу" class="btn">
+                            </form>
+                            <% } else if (appeal.status==="в работе" ) { %>
+                                <form action="/appeal/completed/<%= appeal._id %>" method="GET">
+                                    <input type="submit" value="завершить" class="btn">
+                                </form>
+                                <form action="/appeal/canceled/<%= appeal._id %>" method="GET">
+                                    <input type="submit" value="отменить" class="btn btn-red">
+                                </form>
+                                <% } else { %>
+                                    <form action="/appeal/delete/<%= appeal._id %>?_method=DELETE" method="POST">
+                                        <input type="submit" value="удалить" class="btn btn-red">
+                                    </form>
+                                    <% }%>
+                    </div>
+                </li>
+                <% }) %>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+<div class="box-create">
+    <div class="box-create__content">
+        <p>Отмена обращения</p>
+        <form action="/appeal/canceled/<%= findAppeal._id%>" method="POST">
+            <label for="title" class="big-font">Заголовок обращения: </label>
+            <input type="text" name="title" value="<%= findAppeal.title %>" readonly>
+
+            <label for="content" class="big-font">Содержимое обращения: </label>
+            <textarea name="content" cols="50" rows="5" readonly><%= findAppeal.content %></textarea>
+
+            <label for="answer" class="big-font">Ответ: </label>
+            <textarea name="answer" cols="50" rows="5"></textarea>
+
+            <input type="submit" value="отправить" class="btn big-font">
+            <button onclick="window.history.back()" class="btn big-font btn-center">вернуться назад</button>
+        </form>
+    </div>
+</div>
